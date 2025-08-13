@@ -51,7 +51,6 @@ app.get('/api/scrape', async (req, res) => {
         await browser.close();
         console.log('Navegador fechado.');
     
-        // --- A PARTIR DAQUI, O CÓDIGO É O MESMO DE ANTES ---
         // Usamos o JSDOM para analisar o HTML que o Puppeteer nos deu
         const dom = new JSDOM(html);
         const document = dom.window.document;
