@@ -76,7 +76,7 @@ h1 {
   margin-bottom: 60px;
   font-size: clamp(3.5rem, 6vw, 4.5rem);
   font-weight: 800;
-  background: linear-gradient(135deg, var(--amazon-orange) 0%, var(--amazon-blue) 100%);
+  background: linear-gradient(135deg, var(--amazon-orange) 20%, var(--amazon-blue) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -90,7 +90,7 @@ h1::after {
   content: '';
   position: absolute;
   bottom: -20px;
-  left: 50%;
+  left: 44%;
   transform: translateX(-50%);
   width: 150px;
   height: 6px;
@@ -234,48 +234,44 @@ h1::after {
   transform: translateY(-1px);
 }
 
-/* Loader */
-.loader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  gap: 24px;
-  animation: fadeIn 0.3s ease-out;
+#loading-bar-container {
+  position: fixed; /* Fixa no topo da tela */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px; /* Altura da barra */
+  z-index: 9999;
+  background-color: rgba(255, 153, 0, 0.2); /* Fundo laranja transparente */
 }
 
-.loader::before {
-  content: '';
-  width: 50px;
-  height: 50px;
-  border: 4px solid var(--gray-200);
-  border-top: 4px solid var(--amazon-orange);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.loading-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #ff9900,
+    #ffc371,
+    #ff9900
+  ); /* Gradiente laranja */
+  background-size: 200% 200%;
+  animation: shimmer 1.5s linear infinite; /* Aplica a animação */
 }
 
-.loader::after {
-  content: 'Buscando produtos na Amazon...';
-  font-size: 18px;
-  color: var(--gray-600);
-  font-weight: 500;
-  text-align: center;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
+/* Classe para esconder/mostrar */
 .hidden {
-  display: none !important;
+  display: none;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Animação que cria o efeito de brilho (shimmer) */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
+
 
 /* Results Grid */
 .results {

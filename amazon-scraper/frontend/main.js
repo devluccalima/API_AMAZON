@@ -1,6 +1,8 @@
 const searchBtn = document.getElementById("searchBtn");
 const resultsContainer = document.getElementById("results");
 const keywordInput = document.getElementById("keyword");
+// Seleciona o novo elemento da barra de carregamento
+const loadingBar = document.getElementById("loading-bar-container");
 
 searchBtn.addEventListener("click", async () => {
   const keyword = keywordInput.value.trim();
@@ -9,13 +11,20 @@ searchBtn.addEventListener("click", async () => {
     return;
   }
 
-  resultsContainer.innerHTML = "<p>Carregando...</p>";
+  // Prepara a UI para a busca
+  resultsContainer.innerHTML = "";
+  loadingBar.classList.remove("hidden"); // Mostra a barra de carregamento
+  searchBtn.disabled = true;
 
   try {
     const res = await fetch(`/api/scrape?keyword=${encodeURIComponent(keyword)}`);
-    if (!res.ok) throw new Error("Erro ao buscar os dados");
+    if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || "Erro ao buscar os dados");
+    }
     const products = await res.json();
 
+    // Limpa o contêiner antes de adicionar novos resultados
     resultsContainer.innerHTML = "";
 
     if (products.length === 0) {
@@ -35,8 +44,13 @@ searchBtn.addEventListener("click", async () => {
       `;
       resultsContainer.appendChild(card);
     });
+
   } catch (err) {
     console.error(err);
-    resultsContainer.innerHTML = "<p>Erro ao buscar os produtos.</p>";
+    resultsContainer.innerHTML = `<p>Erro: ${err.message}</p>`;
+  } finally {
+    // Sempre esconde a barra e reabilita o botão no final
+    loadingBar.classList.add("hidden");
+    searchBtn.disabled = false;
   }
 });
